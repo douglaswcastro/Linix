@@ -55,10 +55,6 @@ sudo apt-get update; \
 sudo apt-get install -y dotnet-runtime-6.0
 }
 
-node(){
-  sudo apt install nodejs
-}
-
 # Internet conectando?
 testes_internet(){
 echo "Teste Internet"
@@ -100,7 +96,8 @@ PROGRAMAS_PARA_INSTALAR=(
   git
   wget
   ubuntu-restricted-extras
-
+  nodejs
+  npm
 )
 
 ## Download e instalaçao de programas externos ##
@@ -192,7 +189,6 @@ travas_apt
 add_archi386
 just_apt_update
 dotnet
-node
 install_debs
 install_flatpaks
 install_snaps
