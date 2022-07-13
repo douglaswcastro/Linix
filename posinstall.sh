@@ -55,6 +55,13 @@ sudo apt-get update; \
 sudo apt-get install -y dotnet-runtime-6.0
 }
 
+onedriver(){
+  echo 'deb http://download.opensuse.org/repositories/home:/jstaf/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/home:jstaf.list
+  curl -fsSL https://download.opensuse.org/repositories/home:jstaf/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_jstaf.gpg > /dev/null
+  sudo apt update
+  sudo apt install onedriver
+}
+
 # Internet conectando?
 testes_internet(){
 echo "Teste Internet"
@@ -189,6 +196,7 @@ travas_apt
 add_archi386
 just_apt_update
 dotnet
+onedriver
 install_debs
 install_flatpaks
 install_snaps
