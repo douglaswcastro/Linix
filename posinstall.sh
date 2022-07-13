@@ -13,7 +13,10 @@ URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_curre
 URL_4K_VIDEO_DOWNLOADER="https://dl.4kdownload.com/app/4kvideodownloader_4.20.0-1_amd64.deb?source=website"
 URL_INSYNC="https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.7.2.50318-impish_amd64.deb"
 URL_SYNOLOGY_DRIVE="https://global.download.synology.com/download/Utility/SynologyDriveClient/3.0.3-12689/Ubuntu/Installer/x86_64/synology-drive-client-12689.x86_64.deb"
-
+PPA_LUTRIS="ppa:lutris-team/lutris"
+PPA_GRAPHICS_DRIVERS="ppa:kisak/kisak-mesa"
+URL_WINE_KEY="https://dl.winehq.org/wine-builds/winehq.key"
+URL_PPA_WINE="https://dl.winehq.org/wine-builds/ubuntu/"
 
 ##DIRETÓRIOS E ARQUIVOS
 
@@ -106,7 +109,31 @@ PROGRAMAS_PARA_INSTALAR=(
   nodejs
   npm
   gimp
+  audacity
+  lutris
+  libvulkan1
+  libvulkan1:i386
+  libgnutls30:i386
+  libldap-2.4-2:i386
+  libgpg-error0:i386
+  libxml2:i386
+  libasound2-plugins:i386
+  libsdl2-2.0-0:i386
+  libfreetype6:i386
+  libdbus-1-3:i386
+  libsqlite3-0:i386
+  opencl-headers
+  ocl-icd-libopencl1
+  clinfo
 )
+
+sudo apt-add-repository "$PPA_LIBRATBAG" -y
+sudo add-apt-repository "$PPA_LUTRIS" -y
+sudo apt-add-repository "$PPA_GRAPHICS_DRIVERS" -y
+wget -nc "$URL_WINE_KEY"
+sudo apt-key add winehq.key
+sudo apt-add-repository "deb $URL_PPA_WINE bionic main"
+sudo apt-add-repository "deb $URL_PPA_WINE focal main"
 
 ## Download e instalaçao de programas externos ##
 
@@ -119,6 +146,10 @@ wget -c "$URL_GOOGLE_CHROME"       -P "$DIRETORIO_DOWNLOADS"
 wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$DIRETORIO_DOWNLOADS"
 wget -c "$URL_INSYNC"              -P "$DIRETORIO_DOWNLOADS"
 wget -c "$URL_SYNOLOGY_DRIVE"      -P "$DIRETORIO_DOWNLOADS"
+
+# Instalar Wine
+
+sudo apt install --install-recommends winehq-stable wine-stable wine-stable-i386 wine-stable-amd64 -y
 
 ## Instalando pacotes .deb baixados na sessão anterior ##
 echo -e "${VERDE}[INFO] - Instalando pacotes .deb baixados${SEM_COR}"
@@ -144,7 +175,6 @@ install_flatpaks(){
 
 flatpak install flathub com.obsproject.Studio -y
 flatpak install flathub org.gimp.GIMP -y
-flatpak install flathub com.spotify.Client -y
 flatpak install flathub com.bitwarden.desktop -y
 flatpak install flathub org.telegram.desktop -y
 flatpak install flathub org.freedesktop.Piper -y
@@ -173,6 +203,8 @@ sudo snap install authy
 sudo snap install pycharm-professional --classic
 sudo snap install rider --classic
 sudo snap install intellij-idea-ultimate --classic
+sudo snap install spotify
+sudo snap install obs-studio
 }
 
 ## Finalização, atualização e limpeza##
