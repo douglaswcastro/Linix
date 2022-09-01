@@ -173,8 +173,6 @@ install_flatpaks(){
 
   echo -e "${VERDE}[INFO] - Instalando pacotes flatpak${SEM_COR}"
 
-flatpak install flathub com.obsproject.Studio -y
-flatpak install flathub org.gimp.GIMP -y
 flatpak install flathub com.bitwarden.desktop -y
 flatpak install flathub org.telegram.desktop -y
 flatpak install flathub org.freedesktop.Piper -y
@@ -186,11 +184,9 @@ flatpak install flathub org.flameshot.Flameshot -y
 flatpak install flathub org.electrum.electrum -y
 flatpak install flathub com.discordapp.Discord -y
 flatpak install flathub org.telegram.desktop -y
-flatpak install flathub org.videolan.VLC -y
 flatpak install flathub com.brave.Browser -y
 flatpak install flathub com.getpostman.Postman -y
 flatpak install flathub io.github.mimbrero.WhatsAppDesktop -y
-flatpak install flathub org.audacityteam.Audacity -y
 flatpak install flathub com.adobe.Flash-Player-Projector -y
 }
 ## Instalando pacotes Snap ##
