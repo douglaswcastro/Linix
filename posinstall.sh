@@ -10,9 +10,6 @@ echo "Executando pos instalação"
 ##URLS
 
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_4K_VIDEO_DOWNLOADER="https://dl.4kdownload.com/app/4kvideodownloader_4.20.0-1_amd64.deb?source=website"
-URL_INSYNC="https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.7.2.50318-impish_amd64.deb"
-URL_SYNOLOGY_DRIVE="https://global.download.synology.com/download/Utility/SynologyDriveClient/3.0.3-12689/Ubuntu/Installer/x86_64/synology-drive-client-12689.x86_64.deb"
 PPA_LUTRIS="ppa:lutris-team/lutris"
 PPA_GRAPHICS_DRIVERS="ppa:kisak/kisak-mesa"
 URL_WINE_KEY="https://dl.winehq.org/wine-builds/winehq.key"
@@ -143,9 +140,6 @@ echo -e "${VERDE}[INFO] - Baixando pacotes .deb${SEM_COR}"
 
 mkdir "$DIRETORIO_DOWNLOADS"
 wget -c "$URL_GOOGLE_CHROME"       -P "$DIRETORIO_DOWNLOADS"
-wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$DIRETORIO_DOWNLOADS"
-wget -c "$URL_INSYNC"              -P "$DIRETORIO_DOWNLOADS"
-wget -c "$URL_SYNOLOGY_DRIVE"      -P "$DIRETORIO_DOWNLOADS"
 
 # Instalar Wine
 
