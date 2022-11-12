@@ -35,26 +35,6 @@ apt_update(){
   sudo apt update && sudo apt dist-upgrade -y
 }
 
-# Instalando Dotnet
-dotnet(){
-echo "DotNet"
-wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
-
-sudo apt-get update; \
-  sudo apt-get install -y apt-transport-https && \
-  sudo apt-get update && \
-  sudo apt-get install -y dotnet-sdk-6.0
-
-sudo apt-get update; \
-  sudo apt-get install -y apt-transport-https && \
-  sudo apt-get update && \
-  sudo apt-get install -y aspnetcore-runtime-6.0
-
-sudo apt-get install -y dotnet-runtime-6.0
-}
-
 onedriver(){
   echo 'deb http://download.opensuse.org/repositories/home:/jstaf/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/home:jstaf.list
   curl -fsSL https://download.opensuse.org/repositories/home:jstaf/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_jstaf.gpg > /dev/null
@@ -194,6 +174,12 @@ sudo snap install rider --classic
 sudo snap install intellij-idea-ultimate --classic
 sudo snap install spotify
 sudo snap install obs-studio
+#Dotnet 7.0
+sudo snap install dotnet-runtime-70
+#Dotnet 6.0
+sudo snap install dotnet-runtime-60
+#Dotnet SDK
+sudo snap install dotnet-sdk --classic
 }
 
 ## Finalização, atualização e limpeza##
@@ -214,7 +200,6 @@ apt_update
 travas_apt
 add_archi386
 just_apt_update
-dotnet
 onedriver
 install_debs
 install_flatpaks
