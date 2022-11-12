@@ -20,9 +20,7 @@ URL_PPA_WINE="https://dl.winehq.org/wine-builds/ubuntu/"
 DIRETORIO_DOWNLOADS="$HOME/Downloads"
 FILE="/home/$USER/.config/gtk-3.0/bookmarks"
 
-
 #CORES
-
 VERMELHO='\e[1;91m'
 VERDE='\e[1;92m'
 SEM_COR='\e[0m'
@@ -180,6 +178,8 @@ sudo snap install dotnet-runtime-70
 sudo snap install dotnet-runtime-60
 #Dotnet SDK
 sudo snap install dotnet-sdk --classic
+#node
+sudo snap install node --classic
 }
 
 ## Finalização, atualização e limpeza##
