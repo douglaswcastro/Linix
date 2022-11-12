@@ -87,7 +87,6 @@ sudo dpkg --add-architecture i386
 ##DEB SOFTWARES TO INSTALL
 
 PROGRAMAS_PARA_INSTALAR=(
-  snapd
   winff
   virtualbox
   ratbagd
@@ -186,7 +185,7 @@ flatpak install flathub com.adobe.Flash-Player-Projector -y
 ## Instalando pacotes Snap ##
 
 install_snaps(){
-
+sudo apt install snap
 echo -e "${VERDE}[INFO] - Instalando pacotes snap${SEM_COR}"
 
 sudo snap install authy
