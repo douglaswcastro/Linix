@@ -7,19 +7,6 @@
 
 echo "Executando pos instalação"
 
-##URLS
-
-URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-PPA_LUTRIS="ppa:lutris-team/lutris"
-PPA_GRAPHICS_DRIVERS="ppa:kisak/kisak-mesa"
-URL_WINE_KEY="https://dl.winehq.org/wine-builds/winehq.key"
-URL_PPA_WINE="https://dl.winehq.org/wine-builds/ubuntu/"
-
-##DIRETÓRIOS E ARQUIVOS
-
-DIRETORIO_DOWNLOADS="$HOME/Downloads"
-FILE="/home/$USER/.config/gtk-3.0/bookmarks"
-
 #CORES
 VERMELHO='\e[1;91m'
 VERDE='\e[1;92m'
@@ -38,6 +25,15 @@ onedriver(){
   curl -fsSL https://download.opensuse.org/repositories/home:jstaf/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_jstaf.gpg > /dev/null
   sudo apt update
   sudo apt install onedriver
+}
+
+code(){
+  # vs code
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings
+	sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+	rm -f packages.microsoft.gpg
+	sudo apt update; sudo apt install -y code
 }
 
 # Internet conectando?
@@ -74,7 +70,6 @@ PROGRAMAS_PARA_INSTALAR=(
   synaptic
   solaar
   vlc
-  code
   gnome-sushi 
   folder-color
   git
@@ -111,34 +106,6 @@ sudo apt-add-repository "deb $URL_PPA_WINE focal main"
 
 ## Download e instalaçao de programas externos ##
 
-install_debs(){
-
-echo -e "${VERDE}[INFO] - Baixando pacotes .deb${SEM_COR}"
-
-mkdir "$DIRETORIO_DOWNLOADS"
-wget -c "$URL_GOOGLE_CHROME"       -P "$DIRETORIO_DOWNLOADS"
-
-# Instalar Wine
-
-sudo apt install --install-recommends winehq-stable wine-stable wine-stable-i386 wine-stable-amd64 -y
-
-## Instalando pacotes .deb baixados na sessão anterior ##
-echo -e "${VERDE}[INFO] - Instalando pacotes .deb baixados${SEM_COR}"
-sudo dpkg -i $DIRETORIO_DOWNLOADS/*.deb
-
-# Instalar programas no apt
-echo -e "${VERDE}[INFO] - Instalando pacotes apt do repositório${SEM_COR}"
-
-for nome_do_programa in ${PROGRAMAS_PARA_INSTALAR[@]}; do
-  if ! dpkg -l | grep -q $nome_do_programa; then # Só instala se já não estiver instalado
-    sudo apt install "$nome_do_programa" -y
-  else
-    echo "[INSTALADO] - $nome_do_programa"
-  fi
-done
-
-}
-
 ## Instalando pacotes Flatpak ##
 install_flatpaks(){
 
@@ -163,7 +130,7 @@ flatpak install flathub com.adobe.Flash-Player-Projector -y
 ## Instalando pacotes Snap ##
 
 install_snaps(){
-sudo apt install snap
+sudo apt install snapd
 echo -e "${VERDE}[INFO] - Instalando pacotes snap${SEM_COR}"
 
 sudo snap install authy
@@ -201,9 +168,9 @@ travas_apt
 add_archi386
 just_apt_update
 onedriver
-install_debs
-install_flatpaks
+code
 install_snaps
+install_flatpaks
 extra_config
 apt_update
 system_clean
