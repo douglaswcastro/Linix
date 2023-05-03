@@ -106,6 +106,33 @@ sudo apt-add-repository "deb $URL_PPA_WINE focal main"
 
 ## Download e instalaçao de programas externos ##
 
+install_debs(){
+
+echo -e "${VERDE}[INFO] - Baixando pacotes .deb${SEM_COR}"
+
+mkdir "$DIRETORIO_DOWNLOADS"
+wget -c "$URL_GOOGLE_CHROME"       -P "$DIRETORIO_DOWNLOADS"
+wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$DIRETORIO_DOWNLOADS"
+wget -c "$URL_INSYNC"              -P "$DIRETORIO_DOWNLOADS"
+wget -c "$URL_SYNOLOGY_DRIVE"      -P "$DIRETORIO_DOWNLOADS"
+
+## Instalando pacotes .deb baixados na sessão anterior ##
+echo -e "${VERDE}[INFO] - Instalando pacotes .deb baixados${SEM_COR}"
+sudo dpkg -i $DIRETORIO_DOWNLOADS/*.deb
+
+# Instalar programas no apt
+echo -e "${VERDE}[INFO] - Instalando pacotes apt do repositório${SEM_COR}"
+
+for nome_do_programa in ${PROGRAMAS_PARA_INSTALAR[@]}; do
+  if ! dpkg -l | grep -q $nome_do_programa; then # Só instala se já não estiver instalado
+    sudo apt install "$nome_do_programa" -y
+  else
+    echo "[INSTALADO] - $nome_do_programa"
+  fi
+done
+
+}
+
 ## Instalando pacotes Flatpak ##
 install_flatpaks(){
 
@@ -169,6 +196,7 @@ add_archi386
 just_apt_update
 onedriver
 code
+install_debs
 install_snaps
 install_flatpaks
 extra_config
