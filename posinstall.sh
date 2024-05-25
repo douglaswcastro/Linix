@@ -3,6 +3,7 @@
 # Autor: Douglas Castro
 
 # COMO USAR?
+#   chmod +x pos-os-postinstall.sh
 #   $ ./pos-os-postinstall.sh
 
 echo "Executando pós-instalação"
