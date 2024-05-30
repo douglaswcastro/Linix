@@ -1,10 +1,14 @@
-# PopOsPosInstall
-Script de pós instalação no PopOS
+# Gnome Customização
+Scripts de customização para linux Gnome
 
 Autor: Douglas Castro
 
-COMO USAR?
+#Temas
 
-É necessário verificar se o arquivo tem permissão de executar</br>
-após isso entrar na pasta onde baixou e rodar o comando abaixo </br>
-$ ./pos-os-postinstall.sh
+  Dark Theme
+
+  MacOs
+
+#Programas Essenciais
+
+
