@@ -1,0 +1,8 @@
+Package: linix
+Version: 1.0-1
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Douglas Castro <seu-email@exemplo.com>
+Description: Script de pós-instalação para distribuições Linux baseadas em Ubuntu.
+ Automação de instalação de programas via apt, snap, flatpak e .deb.

@@ -52,9 +52,12 @@ Flatpaks e Snaps precisam que seus respectivos gerenciadores estejam instalados.
 
 Caso você utilize outra versão do Ubuntu, edite as URLs e comandos conforme necessário.
 
+---
 
-🤝 Contribuições
+## 🤝 Contribuições
 Pull Requests e sugestões são bem-vindas! Sinta-se à vontade para abrir uma Issue com ideias, bugs ou melhorias.
+
+---
 
 📜 Licença
 Este projeto está licenciado sob a MIT License.
