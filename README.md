@@ -34,16 +34,16 @@ Script de pós-instalação para distribuições baseadas em Ubuntu. Automatiza 
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/linux-posinstall.git
+git clone https://github.com/douglaswcastro/linix.git
 
 # Acesse a pasta
-cd linux-posinstall
+cd linix
 
 # Dê permissão de execução
-chmod +x posinstall.sh
+chmod +x linix.sh
 
 # Execute o script
-./posinstall.sh
+./linix.sh
 
 🧠 Observações
 O DaVinci Resolve requer extração e instalação manual após o download.

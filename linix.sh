@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Autor: Douglas Castro
+# Autor: Douglas Castro (Atualizado para Ubuntu 24.04 com suporte a Steam)
 
 # CORES
 VERMELHO='\e[1;91m'
@@ -12,18 +12,12 @@ DIRETORIO_DOWNLOADS="$HOME/Downloads/programas"
 
 # URLs dos pacotes .deb externos
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_4K_VIDEO_DOWNLOADER="https://dl.4kdownload.com/app/4kvideodownloader_4.18.5-1_amd64.deb"
-URL_INSYNC="https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.7.0.50216-impish_amd64.deb"
-URL_SYNOLOGY_DRIVE="https://global.download.synology.com/download/Utility/SynologyDriveClient/2.0.3-11105/Ubuntu/Installer/x86_64/synology-drive-client-11105.x86_64.deb"
 URL_VIVALDI="https://downloads.vivaldi.com/stable/vivaldi-stable_6.7.3329.31-1_amd64.deb"
 URL_DAVINCI_RESOLVE="https://www.blackmagicdesign.com/api/support/download/9e0dc87cba8b43c2a4c9b20ec53004c9/Linux"
 
-# PPAs e chaves
-PPA_LIBRATBAG="ppa:libratbag-piper/piper-libratbag-git"
-PPA_LUTRIS="ppa:lutris-team/lutris"
-PPA_GRAPHICS_DRIVERS="ppa:graphics-drivers/ppa"
+# URLs e repositórios
 URL_WINE_KEY="https://dl.winehq.org/wine-builds/winehq.key"
-URL_PPA_WINE="https://dl.winehq.org/wine-builds/ubuntu/"
+URL_PPA_WINE="https://dl.winehq.org/wine-builds/ubuntu"
 
 testes_internet(){
   echo "Teste Internet"
@@ -37,7 +31,7 @@ testes_internet(){
 
 apt_update(){
   echo "Atualizando sistema"
-  sudo apt update && sudo apt dist-upgrade -y
+  sudo apt update && sudo apt full-upgrade -y
 }
 
 travas_apt(){
@@ -46,6 +40,7 @@ travas_apt(){
 
 add_archi386(){
   sudo dpkg --add-architecture i386
+  sudo apt update
 }
 
 onedriver(){
@@ -54,8 +49,8 @@ onedriver(){
     return
   fi
   echo "Instalando Onedriver"
-  echo 'deb http://download.opensuse.org/repositories/home:/jstaf/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/home:jstaf.list
-  curl -fsSL https://download.opensuse.org/repositories/home:/jstaf/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_jstaf.gpg > /dev/null
+  echo 'deb http://download.opensuse.org/repositories/home:/jstaf/xUbuntu_24.04/ /' | sudo tee /etc/apt/sources.list.d/home:jstaf.list
+  curl -fsSL https://download.opensuse.org/repositories/home:/jstaf/xUbuntu_24.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_jstaf.gpg > /dev/null
   sudo apt update && sudo apt install -y onedriver
 }
 
@@ -65,10 +60,8 @@ code(){
     return
   fi
   echo "Instalando VSCode"
-  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-  rm -f packages.microsoft.gpg
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/keyrings/microsoft.gpg > /dev/null
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
   sudo apt update && sudo apt install -y code
 }
 
@@ -98,41 +91,30 @@ install_apt_programs(){
 }
 
 add_ppas(){
-  echo -e "${VERDE}[INFO] - Adicionando PPAs${SEM_COR}"
-  sudo apt-add-repository -y "$PPA_LIBRATBAG"
-  sudo add-apt-repository -y "$PPA_LUTRIS"
-  sudo apt-add-repository -y "$PPA_GRAPHICS_DRIVERS"
-  wget -nc "$URL_WINE_KEY" -O winehq.key
-  sudo apt-key add winehq.key
-  sudo apt-add-repository "deb $URL_PPA_WINE bionic main"
-  sudo apt-add-repository "deb $URL_PPA_WINE focal main"
+  echo -e "${VERDE}[INFO] - Adicionando repositórios${SEM_COR}"
+  sudo add-apt-repository -y ppa:lutris-team/lutris
+  sudo add-apt-repository -y ppa:graphics-drivers/ppa
+
+  sudo mkdir -pm755 /etc/apt/keyrings
+  wget -O /etc/apt/keyrings/winehq-archive.key "$URL_WINE_KEY"
+  sudo wget -NP /etc/apt/sources.list.d/ "$URL_PPA_WINE/dists/noble/winehq-noble.sources"
 }
 
 install_debs(){
-  echo -e "${VERDE}[INFO] - Instalando .deb${SEM_COR}"
+  echo -e "${VERDE}[INFO] - Baixando e instalando .deb${SEM_COR}"
   mkdir -p "$DIRETORIO_DOWNLOADS"
   
-  if ! command -v google-chrome &> /dev/null; then
-    wget -c "$URL_GOOGLE_CHROME" -P "$DIRETORIO_DOWNLOADS"
-  else
-    echo -e "${VERDE}[INSTALADO] - Google Chrome${SEM_COR}"
-  fi
+  wget -nc "$URL_GOOGLE_CHROME" -P "$DIRETORIO_DOWNLOADS"
+  wget -nc "$URL_VIVALDI" -P "$DIRETORIO_DOWNLOADS"
 
-  if ! command -v vivaldi &> /dev/null; then
-    wget -c "$URL_VIVALDI" -P "$DIRETORIO_DOWNLOADS"
-  else
-    echo -e "${VERDE}[INSTALADO] - Vivaldi${SEM_COR}"
-  fi
-
-  sudo dpkg -i $DIRETORIO_DOWNLOADS/*.deb
-  sudo apt-get install -f -y
+  sudo dpkg -i $DIRETORIO_DOWNLOADS/*.deb || sudo apt install -f -y
 }
 
 install_flatpaks(){
   echo -e "${VERDE}[INFO] - Instalando Flatpaks${SEM_COR}"
   if ! command -v flatpak &> /dev/null; then
-    echo -e "${VERMELHO}[ERRO] - Flatpak não instalado.${SEM_COR}"
-    return
+    sudo apt install -y flatpak
+    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   fi
   local flatpaks=(org.telegram.desktop com.discordapp.Discord)
   for flatpak in "${flatpaks[@]}"; do
@@ -149,23 +131,32 @@ install_snaps(){
   if ! command -v snap &> /dev/null; then
     sudo apt install -y snapd
   fi
-  local snaps=("spotify" "code --classic")
-  for snap in "${snaps[@]}"; do
-    local snap_name=$(echo "$snap" | cut -d' ' -f1)
-    if ! snap list | grep -q "$snap_name"; then
-      sudo snap install $snap
-    else
-      echo -e "${VERDE}[INSTALADO] - $snap_name${SEM_COR}"
-    fi
-  done
+  if ! snap list | grep -q spotify; then
+    sudo snap install spotify
+  fi
+  if ! snap list | grep -q code; then
+    sudo snap install code --classic
+  fi
+}
+
+install_steam_gaming(){
+  echo -e "${VERDE}[INFO] - Instalando suporte a jogos Steam${SEM_COR}"
+  sudo apt install -y steam \
+    libgl1-mesa-dri:i386 \
+    libgl1:i386 \
+    libnss3:i386 \
+    libstdc++6:i386 \
+    libtcmalloc-minimal4:i386 \
+    mesa-vulkan-drivers mesa-vulkan-drivers:i386 \
+    vulkan-tools
+
+  echo -e "${VERDE}[INFO] - Steam instalada. Ative o Proton nas configurações da Steam.${SEM_COR}"
 }
 
 system_clean(){
   echo -e "${VERDE}[INFO] - Limpando sistema${SEM_COR}"
-  sudo apt update && sudo apt upgrade -y
+  sudo apt autoremove -y && sudo apt autoclean -y
   flatpak update -y
-  sudo apt autoclean -y && sudo apt autoremove -y
-  nautilus -q
 }
 
 instalar_tudo(){
@@ -180,13 +171,14 @@ instalar_tudo(){
   install_snaps
   onedriver
   code
+  install_steam_gaming
   davinci_resolve
   system_clean
 }
 
 menu_instalador(){
   clear
-  echo -e "${VERDE}=========== MENU DE INSTALA\u00c7\u00c3O ===========${SEM_COR}"
+  echo -e "${VERDE}=========== MENU DE INSTALAÇÃO ===========${SEM_COR}"
   echo "1 - Atualizar sistema"
   echo "2 - Adicionar PPAs"
   echo "3 - Instalar .deb"
@@ -197,11 +189,12 @@ menu_instalador(){
   echo "8 - VSCode"
   echo "9 - DaVinci Resolve"
   echo "10 - Limpeza"
-  echo "11 - Instalar tudo"
+  echo "11 - Instalar Steam e suporte a jogos"
+  echo "12 - Instalar tudo"
   echo "0 - Sair"
   echo "=========================================="
 
-  read -p "Escolha uma opcao: " opcao
+  read -p "Escolha uma opção: " opcao
   case $opcao in
     1) travas_apt; testes_internet; apt_update; add_archi386;;
     2) add_ppas;;
@@ -213,9 +206,10 @@ menu_instalador(){
     8) code;;
     9) davinci_resolve;;
     10) system_clean;;
-    11) instalar_tudo;;
+    11) install_steam_gaming;;
+    12) instalar_tudo;;
     0) echo -e "${VERDE}Saindo...${SEM_COR}"; exit 0;;
-    *) echo -e "${VERMELHO}Op\u00e7\u00e3o inv\u00e1lida.${SEM_COR}";;
+    *) echo -e "${VERMELHO}Opção inválida.${SEM_COR}";;
   esac
 }
 
@@ -223,5 +217,3 @@ while true; do
   menu_instalador
   read -p "Pressione Enter para continuar..."
 done
-echo -e "${VERDE}Obrigado por usar o instalador!${SEM_COR}"
-exit 0
